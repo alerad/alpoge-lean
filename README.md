@@ -69,3 +69,7 @@ presentation refines observations circulating in community analyses.  The
 formalization and the new theorems here were produced in an AI-assisted
 workflow (CAS-discovered certificates checked by `linear_combination`);
 details on request.
+
+## License
+
+Apache License 2.0 (the Mathlib ecosystem license) — see `LICENSE`.
