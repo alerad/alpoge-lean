@@ -70,6 +70,20 @@ formalization and the new theorems here were produced in an AI-assisted
 workflow (CAS-discovered certificates checked by `linear_combination`);
 details on request.
 
+## Related work
+
+The projective simple-root description and the exact complex image also appear
+(independently, same-day) in the prose note *A Counterexample to the Jacobian
+Conjecture* at ulam.ai (2026-07-20), which further develops general Keller-map
+properness equivalences and higher-degree families.  That note contains no
+formalization.  The distinctive contributions here are: machine-checked proofs
+of the structure theory (the incidence equivalence is definitional in Lean),
+and the arithmetic strengthening — the fiber equivalence and the 0/1/3 law
+over **every** field of characteristic zero (mostly char ≠ 2), with two
+rational fiber points constructively determining a third.  Other public Lean
+formalizations verify the Jacobian determinant and the three-point collision
+only.
+
 ## License
 
 Apache License 2.0 (the Mathlib ecosystem license) — see `LICENSE`.
