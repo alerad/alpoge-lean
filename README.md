@@ -1,5 +1,8 @@
 # Formal verification and structure theory of the Alpöge Keller map
 
+[![CI](https://github.com/alerad/alpoge-lean/actions/workflows/ci.yml/badge.svg)](https://github.com/alerad/alpoge-lean/actions/workflows/ci.yml)
+[![DOI](https://zenodo.org/badge/1306865154.svg)](https://doi.org/10.5281/zenodo.21461528)
+
 Lean 4 / Mathlib formalization of Alpöge's July 2026 counterexample to the
 Jacobian Conjecture, together with new machine-verified theorems about its
 geometry.  Two files, no `sorry`, no axioms beyond Mathlib.

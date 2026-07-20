@@ -8,6 +8,9 @@ authors:
     orcid: "https://orcid.org/0009-0001-7612-1082"
 repository-code: "https://github.com/alerad/alpoge-lean"
 license: Apache-2.0
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.21461528
 abstract: >-
   Lean 4 / Mathlib formalization of Alpöge's 2026 counterexample to the
   Jacobian Conjecture, with machine-verified structure theorems: the source
