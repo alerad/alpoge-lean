@@ -49,10 +49,19 @@ only `2 ≠ 0`):
 In one sentence: étaleness remembers only that every reached root is simple;
 it cannot know whether the cubic has three, one, or zero of them.
 
+Additionally verified (counting layer):
+
+- `fiber_ncard_le_three`, `fiber_ncard_mem_zero_one_three` — every rational
+  fiber over a characteristic-zero field is finite of cardinality `0`, `1`,
+  or `3`;
+- `range_eq_compl_missedCurve` — over an algebraically closed field of
+  characteristic zero the image is exactly the complement of the triple-root
+  curve `{12a = b², 3bc = 4}`;
+- `projective_structure_and_exact_image`, `counterexample_explained` —
+  packaged headline statements.
+
 ## Not claimed (work in progress)
 
-- the exact fiber count `3/1/0` over an algebraically closed field (all
-  ingredients above; multiset counting glue pending);
 - `S₃` monodromy and irreducibility statements;
 - identification of the non-properness set with `V(W)`;
 - scheme-level (as opposed to `K`-point) statements;
