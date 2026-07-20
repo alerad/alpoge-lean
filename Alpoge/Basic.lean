@@ -1379,4 +1379,87 @@ theorem counterexample_explained (K : Type*) [Field K] [CharZero K] :
 
 end FiberEquiv
 
+
+section Stratification
+
+/-! ### The missed curve as a punctured line, and stratum boundaries
+
+`missedCurveEquivNonzero` upgrades the parametrization of the missed curve to
+an equivalence with `K \ {0}` (the `K`-points of `𝔾ₘ`): projection to the
+`b`-coordinate, with explicit inverse `s ↦ (s²/12, s, 4/(3s))`.
+`fiber_ncard_eq_zero_iff` identifies the empty stratum exactly, and
+`fiber_ncard_mem_one_three_of_not_onMissedCurve` bounds the remaining strata. -/
+
+variable {K : Type*} [Field K]
+
+/-- The wall polynomial `W` vanishes on the missed curve. -/
+theorem wallW_eq_zero_of_onMissedCurve [CharZero K] {a b c : K}
+    (h : OnMissedCurve a b c) :
+    27 * a ^ 2 * c ^ 2 - 18 * a * b * c + 16 * a + b ^ 3 * c - b ^ 2 = 0 := by
+  obtain ⟨h1, h2⟩ := h
+  linear_combination
+    (9 * a * c ^ 2 / 4 + 3 * b ^ 2 * c ^ 2 / 16 - 3 * b * c / 2 + 4 / 3) * h1 +
+      (b ^ 3 * c / 16 - b ^ 2 / 12) * h2
+
+/-- **The missed curve is a punctured line.**  Projection to the
+`b`-coordinate is an equivalence onto `K \ {0}`, with inverse
+`s ↦ (s²/12, s, 4/(3s))`. -/
+def missedCurveEquivNonzero [CharZero K] :
+    {q : K × K × K // OnMissedCurve q.1 q.2.1 q.2.2} ≃ {s : K // s ≠ 0} where
+  toFun q := ⟨q.1.2.1, fun hb => by
+    have h2 := q.2.2
+    rw [hb] at h2
+    norm_num at h2⟩
+  invFun s := ⟨(s.1 ^ 2 / 12, s.1, 4 / (3 * s.1)), by
+    refine ⟨by field_simp, ?_⟩
+    have hs := s.2
+    field_simp⟩
+  left_inv q := by
+    obtain ⟨⟨a, b, c⟩, h1, h2⟩ := q
+    have h1' : 12 * a = b ^ 2 := h1
+    have h2' : 3 * b * c = 4 := h2
+    have hb : b ≠ 0 := fun hb => by rw [hb] at h2'; norm_num at h2'
+    apply Subtype.ext
+    simp only [Prod.mk.injEq]
+    refine ⟨?_, trivial, ?_⟩
+    · field_simp
+      linear_combination -h1'
+    · field_simp
+      linear_combination -h2'
+  right_inv s := Subtype.ext rfl
+
+/-- **Empty stratum.**  Over an algebraically closed field of characteristic
+zero, the fiber is empty exactly on the missed curve. -/
+theorem fiber_ncard_eq_zero_iff [CharZero K] [IsAlgClosed K] (a b c : K) :
+    Set.ncard {p : K × K × K | F K p = (a, b, c)} = 0 ↔ OnMissedCurve a b c := by
+  rw [Set.ncard_eq_zero (fiber_finite a b c)]
+  constructor
+  · intro hS
+    by_contra hC
+    obtain ⟨p, hp⟩ := (mem_range_iff_not_onMissedCurve a b c).mpr hC
+    have : p ∈ {p : K × K × K | F K p = (a, b, c)} := hp
+    rw [hS] at this
+    exact Set.notMem_empty p this
+  · intro hC
+    ext p
+    simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+    intro hp
+    exact (mem_range_iff_not_onMissedCurve a b c).mp ⟨p, hp⟩ hC
+
+/-- **Nonempty strata.**  Off the missed curve, the fiber has exactly one or
+exactly three rational points. -/
+theorem fiber_ncard_mem_one_three_of_not_onMissedCurve [CharZero K] [IsAlgClosed K]
+    {a b c : K} (hC : ¬ OnMissedCurve a b c) :
+    Set.ncard {p : K × K × K | F K p = (a, b, c)} ∈ ({1, 3} : Set ℕ) := by
+  have h013 := fiber_ncard_mem_zero_one_three a b c
+  have h0 : Set.ncard {p : K × K × K | F K p = (a, b, c)} ≠ 0 := fun h =>
+    hC ((fiber_ncard_eq_zero_iff a b c).mp h)
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at h013 ⊢
+  rcases h013 with h | h | h
+  · exact absurd h h0
+  · exact Or.inl h
+  · exact Or.inr h
+
+end Stratification
+
 end Alpoge

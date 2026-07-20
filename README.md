@@ -58,7 +58,13 @@ Additionally verified (counting layer):
   characteristic zero the image is exactly the complement of the triple-root
   curve `{12a = b², 3bc = 4}`;
 - `projective_structure_and_exact_image`, `counterexample_explained` —
-  packaged headline statements.
+  packaged headline statements;
+- `missedCurveEquivNonzero` — the missed curve is a punctured line: projection
+  to the `b`-coordinate is an equivalence onto `K \ {0}`, with explicit
+  inverse `s ↦ (s²/12, s, 4/(3s))`;
+- `fiber_ncard_eq_zero_iff`, `fiber_ncard_mem_one_three_of_not_onMissedCurve`,
+  `wallW_eq_zero_of_onMissedCurve` — stratum boundaries: the fiber is empty
+  exactly on the missed curve, and has one or three points off it.
 
 ## Not claimed (work in progress)
 
