@@ -5,7 +5,7 @@
 
 Lean 4 / Mathlib formalization of Alpöge's July 2026 counterexample to the
 Jacobian Conjecture, together with new machine-verified theorems about its
-geometry.  Two files, no `sorry`, no axioms beyond Mathlib.
+geometry.  Three files, no `sorry`, no axioms beyond Mathlib.
 
 ## Verified results (`Alpoge/Basic.lean`)
 
@@ -66,10 +66,40 @@ Additionally verified (counting layer):
   `wallW_eq_zero_of_onMissedCurve` — stratum boundaries: the fiber is empty
   exactly on the missed curve, and has one or three points off it.
 
+## Wall stratification (`Alpoge/Wall.lean`)
+
+The non-properness wall `V(W)` identified, at the `K`-point level, as the
+exact fiber-drop locus — and the missed curve as its singular locus:
+
+- `neg_four_mul_wallW_eq_sq_sep` — discriminant as root separation: under the
+  Vieta relations of the fiber cubic, `−4W = c⁴·(t₁−t₂)²(t₁−t₃)²(t₂−t₃)²`;
+- `wallW_ne_zero_of_two_fiber_points`, `fiber_ncard_le_one_of_wallW_eq_zero` —
+  **arithmetic wall pinch**: over any field (char ≠ 2, projective-root form
+  characteristic-free), two distinct rational states in one fiber force
+  `W ≠ 0`; on the wall every rational fiber has at most one point, with no
+  algebraic closure needed;
+- `simpleRoot_of_root_of_wallW_ne_zero` — off the wall every root of the
+  fiber cubic is automatically simple (via the universal certificate
+  `disc_factorization`);
+- `fiber_ncard_eq_three_iff`, `fiber_ncard_eq_one_iff`,
+  `fiber_ncard_stratification` — over an algebraically closed field of
+  characteristic zero the count is an exact dictionary: `3` iff `W ≠ 0`,
+  `1` iff `W = 0` off the missed curve, `0` iff on the missed curve.  The
+  prose claim "fibers jump `3 → 1 → 0` across the discriminant wall" is now
+  a theorem;
+- `onMissedCurve_iff_pderiv_wallPoly_eq_zero`,
+  `onMissedCurve_iff_singular_point` — **the missed curve is the singular
+  locus of `V(W)`**: with `wallPoly` over `ℤ` and genuine
+  `MvPolynomial.pderiv` partials, the critical equations `∇W = 0` hold at a
+  `K`-point (char ≠ 2) exactly on the missed curve.  Certificates:
+  `(3bc−4)² = W_a + 3c·W_b` (an identity over `ℤ`) and
+  `b·W_b + 2(12a−b²) = (b²−6a)(3bc−4)`.
+
 ## Not claimed (work in progress)
 
 - `S₃` monodromy and irreducibility statements;
-- identification of the non-properness set with `V(W)`;
+- identification of the non-properness set with `V(W)` beyond the `K`-point
+  fiber-count layer above (no properness/topology is formalized);
 - scheme-level (as opposed to `K`-point) statements;
 - the analytic identification of formal partials with Fréchet derivatives.
 
