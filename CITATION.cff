@@ -11,15 +11,20 @@ license: Apache-2.0
 identifiers:
   - type: doi
     value: 10.5281/zenodo.21461528
+version: 0.2.0
+date-released: "2026-07-21"
 abstract: >-
   Lean 4 / Mathlib formalization of Alpöge's 2026 counterexample to the
   Jacobian Conjecture, with machine-verified structure theorems: the source
   is equivalent to the simple-root incidence space of normalized binary
   cubics (the Keller map becomes the coefficient projection, definitionally);
   every rational fiber over a characteristic-zero field has cardinality 0, 1,
-  or 3, with two fiber points constructively determining a third; and over an
+  or 3, with two fiber points constructively determining a third; over an
   algebraically closed field the image is exactly the complement of the
-  triple-root curve.
+  triple-root curve; the discriminant hypersurface V(W) is exactly the
+  fiber-drop locus (counts 3/1/0), with at most one rational fiber point on
+  V(W) over any field with 2 nonzero; and the missed curve is exactly the
+  singular locus of V(W).
 keywords:
   - Jacobian conjecture
   - Keller map
