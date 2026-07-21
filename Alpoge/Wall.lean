@@ -1,17 +1,18 @@
 import Alpoge.Basic
 
 /-!
-# The wall is the fiber-drop locus; the missed curve is its singular locus
+# The discriminant hypersurface is the fiber-drop locus; its singular locus
+is the missed curve
 
-This module identifies the non-properness wall `V(W)`,
-`W = 27a²c² − 18abc + 16a + b³c − b²`, with the exact locus where the fiber
-count of the Keller map drops, and identifies the missed curve with the
-singular locus of `V(W)`.  Headline results:
+This module identifies the discriminant hypersurface `V(W)`,
+`W = 27a²c² − 18abc + 16a + b³c − b²` (`disc P = −4W`, `fiberCubic_discr`),
+with the exact locus where the fiber count of the Keller map drops, and
+identifies the missed curve with the singular locus of `V(W)`.  Headline results:
 
 * `neg_four_mul_wallW_eq_sq_sep` — **discriminant as root separation**: under
   the Vieta relations of the fiber cubic, `−4W = c⁴·∏ᵢ<ⱼ (tᵢ − tⱼ)²`;
 * `wallW_ne_zero_of_two_fiber_points` — **arithmetic wall pinch**: over *any*
-  field with `2 ≠ 0`, two distinct rational states in one fiber force
+  field with `2 ≠ 0`, two distinct rational points in one fiber force
   `W ≠ 0`; contrapositive `fiber_ncard_le_one_of_wallW_eq_zero`: on the wall,
   every rational fiber has at most one point — no algebraic closure needed;
 * `fiber_ncard_eq_three_iff`, `fiber_ncard_eq_one_iff` — over an
@@ -183,7 +184,7 @@ theorem wallW_ne_zero_of_two_projectiveSimpleRoots {a b c : K}
               (fun h => hne (congrArg some h)) h₁ h₂
 
 /-- **Arithmetic wall pinch.**  Over any field with `2 ≠ 0`, two distinct
-rational states in one fiber force `W ≠ 0`: the wall carries no multiple
+rational points in one fiber force `W ≠ 0`: the wall carries no multiple
 rational point of any fiber. -/
 theorem wallW_ne_zero_of_two_fiber_points [NeZero (2 : K)] {a b c : K}
     {p₁ p₂ : K × K × K} (h₁ : F K p₁ = (a, b, c)) (h₂ : F K p₂ = (a, b, c))
@@ -390,8 +391,7 @@ theorem fiber_ncard_eq_one_iff [CharZero K] [IsAlgClosed K] (a b c : K) :
 characteristic-zero field the fiber count reads off the wall exactly:
 `3` off `V(W)`, `1` on `V(W)` off the missed curve, `0` on the missed
 curve.  This upgrades the `0/1/3` law to an exact dictionary and identifies
-`V(W)` as the locus of fiber collapse — the `K`-point shadow of
-non-properness. -/
+`V(W)` as the locus of fiber collapse. -/
 theorem fiber_ncard_stratification [CharZero K] [IsAlgClosed K] (a b c : K) :
     (Set.ncard {p : K × K × K | F K p = (a, b, c)} = 3 ↔ wallW a b c ≠ 0) ∧
     (Set.ncard {p : K × K × K | F K p = (a, b, c)} = 1 ↔

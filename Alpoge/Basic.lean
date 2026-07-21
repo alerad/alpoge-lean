@@ -2,7 +2,7 @@ import Mathlib
 import Mathlib.FieldTheory.IsAlgClosed.Basic
 
 /-!
-# A Keller observer with a hidden distinction
+# Alpöge's Keller map: a counterexample to the Jacobian Conjecture
 
 
 ```text
@@ -13,12 +13,12 @@ F (x, y, z) =
 ```
 
 has formal Jacobian determinant identically `-2` over `ℤ`, yet identifies the
-three rational states `(0, 0, -1/4)`, `(1, -3/2, 13/2)`, `(-1, 3/2, 13/2)`.
+three rational points `(0, 0, -1/4)`, `(1, -3/2, 13/2)`, `(-1, 3/2, 13/2)`.
 
-Conceptually: every first-order localization of `F` is exact — the Jacobian
-is a nonzero constant, so `F` is everywhere a local isomorphism — while the
-map still identifies distinct global states.  Local invertibility everywhere
-does not imply global injectivity.
+Conceptually: the Jacobian determinant is a nonzero constant (the Keller
+condition), so the differential of `F` is invertible at every point — yet the
+map identifies distinct points.  An everywhere-invertible differential does
+not imply global injectivity.
 
 The headline results are:
 
@@ -27,7 +27,7 @@ The headline results are:
   the Keller condition is a statement about the same object;
 * `F_p₀_eq`, `F_p₁_eq`, `F_p₂_eq`: the three witnesses share one image;
 * `not_injective`: `F` is not injective over any characteristic-zero field;
-* `keller_but_hidden`: the combined counterexample statement.
+* `keller_counterexample`: the combined counterexample statement.
 
 The projective fiber theorem below identifies every fiber with the simple
 rational roots of one binary cubic.  It yields the arithmetic `0/1/3` law over
@@ -90,7 +90,7 @@ section Concrete
 
 variable (K : Type*) [Field K]
 
-/-- The counterexample map on concrete states over a field. -/
+/-- The counterexample map on points over a field. -/
 def F : K × K × K → K × K × K := fun p =>
   ((1 + p.1 * p.2.1) ^ 3 * p.2.2 +
       p.2.1 ^ 2 * (1 + p.1 * p.2.1) * (4 + 3 * p.1 * p.2.1),
@@ -99,7 +99,7 @@ def F : K × K × K → K × K × K := fun p =>
    2 * p.1 - 3 * p.1 ^ 2 * p.2.1 - p.1 ^ 3 * p.2.2)
 
 /-- The concrete map is evaluation of the formal polynomials, so the Keller
-condition `jacobian_det` and the collapsing witnesses below concern the same
+condition `jacobian_det` and the three-point collision below concerns the same
 object. -/
 theorem F_eq_eval (p : K × K × K) :
     F K p =
@@ -111,13 +111,13 @@ theorem F_eq_eval (p : K × K × K) :
     map_ofNat, aeval_X, Matrix.cons_val_zero, Matrix.cons_val_one,
     Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons]
 
-/-- First collapsing state. -/
+/-- First point of the three-point collision. -/
 def p₀ : K × K × K := (0, 0, -(1 / 4))
 
-/-- Second collapsing state. -/
+/-- Second point of the three-point collision. -/
 def p₁ : K × K × K := (1, -(3 / 2), 13 / 2)
 
-/-- Third collapsing state. -/
+/-- Third point of the three-point collision. -/
 def p₂ : K × K × K := (-1, 3 / 2, 13 / 2)
 
 theorem F_p₀_eq : F K (p₀ K) = (-(1 / 4), 0, 0) := by
@@ -136,7 +136,7 @@ variable [CharZero K]
 theorem p₁_ne_p₂ : p₁ K ≠ p₂ K := by
   norm_num [p₁, p₂, Prod.ext_iff]
 
-/-- The observer `F` merges two distinct states: it is not injective over any
+/-- The map `F` identifies two distinct points: it is not injective over any
 characteristic-zero field. -/
 theorem not_injective : ¬ Function.Injective (F K) := by
   intro h
@@ -145,11 +145,11 @@ theorem not_injective : ¬ Function.Injective (F K) := by
 
 /-- **Counterexample to the Jacobian Conjecture (Alpöge, 2026).**  The map has
 constant formal Jacobian determinant `-2` and is not injective. -/
-theorem keller_but_hidden :
+theorem keller_counterexample :
     jacobian.det = -2 ∧ ¬ Function.Injective (F K) :=
   ⟨jacobian_det, not_injective K⟩
 
-/-- **The missed curve.**  No state is sent to any point of the rational curve
+/-- **The missed curve.**  No source point is sent to any point of the rational curve
 `s ↦ (s²/12, s, 4/(3s))`.  The proof is a Nullstellensatz certificate: explicit
 degree-four cofactors witness `2sx` in the fiber ideal, forcing `x = 0`, which
 contradicts the third observed coordinate.  Found by eliminating the fiber
@@ -180,10 +180,10 @@ theorem missed_curve (s : K) (hs : s ≠ 0) (p : K × K × K) :
     OfNat.ofNat_ne_zero, not_false_eq_true, mul_comm] at h3'
   norm_num at h3'
 
-/-- **Non-surjectivity.**  The Keller observer misses the explicit rational
-point `(1/12, 1, 4/3)`: its reached range is a proper subset of the codomain.
+/-- **Non-surjectivity.**  The Keller map misses the explicit rational
+point `(1/12, 1, 4/3)`: its image is a proper subset of the codomain.
 Together with `not_injective`, the first Jacobian-Conjecture counterexample is
-doubly non-invertible — it merges states and fails to reach states. -/
+doubly non-invertible — it identifies points and omits values. -/
 theorem not_surjective : ¬ Function.Surjective (F K) := by
   intro hsurj
   obtain ⟨p, hp⟩ := hsurj (1 / 12, 1, 4 / 3)
@@ -191,8 +191,7 @@ theorem not_surjective : ¬ Function.Surjective (F K) := by
   rw [hp]
   norm_num
 
-/-- The missed point, stated against the reached range: the visible world of
-the Keller observer is canonically `Set.range (F K)`, and that range omits
+/-- The omitted point, stated against the range: `Set.range (F K)` omits
 `(1/12, 1, 4/3)`. -/
 theorem missed_point_not_mem_range :
     (1 / 12, 1, 4 / 3) ∉ Set.range (F K) := by
@@ -202,21 +201,21 @@ theorem missed_point_not_mem_range :
   norm_num
 
 omit [CharZero K] in
-/-- The plane `c = 0` is entirely reached: an explicit polynomial section of
-the observer over that plane. -/
+/-- The plane `c = 0` lies entirely in the image: an explicit polynomial
+section of the map over that plane. -/
 theorem plane_section (a b : K) : F K (0, b, a - 4 * b ^ 2) = (a, b, 0) := by
   simp only [F, Prod.mk.injEq]
   exact ⟨by ring, by ring, by ring⟩
 
-/-- Explicit attained targets on the non-properness wall along the axis
-`a = b = 0`: one visible preimage survives there. -/
+/-- Explicit attained targets on the discriminant wall along the axis
+`a = b = 0`: one rational preimage survives there. -/
 theorem wall_axis_attained (c : K) : F K (c / 2, 0, 0) = (0, 0, c) := by
   simp only [F, Prod.mk.injEq]
   refine ⟨by ring, by ring, ?_⟩
   field_simp
   ring
 
-/-- **The three-point fiber, packaged.**  Three pairwise distinct states over
+/-- **The three-point fiber, packaged.**  Three pairwise distinct points over
 `(-1/4, 0, 0)`. -/
 theorem three_point_fiber :
     F K (p₀ K) = (-(1 / 4), 0, 0) ∧ F K (p₁ K) = (-(1 / 4), 0, 0) ∧
@@ -231,7 +230,7 @@ set_option maxHeartbeats 4000000 in
 -- Checking the explicit 233-term Nullstellensatz certificate is intentionally computation-heavy.
 set_option linter.style.longLine false in
 omit [CharZero K] in
-/-- **Certified fiber cubic.**  Every state observed at `(a, b, c)` satisfies
+/-- **Certified fiber cubic.**  Every preimage of `(a, b, c)` satisfies
 the sheet cubic: with `u = 1 + xy` and
 `W = 27a²c² − 18abc + 16a + b³c − b²`,
 
@@ -239,13 +238,13 @@ the sheet cubic: with `u = 1 + xy` and
 c² · (W u³ + (b² − 12a) u − 4a) = 0.
 ```
 
-For `c ≠ 0` this bounds the visible fiber by the roots of a cubic whose
-leading coefficient is exactly the non-properness scalar `W`: three sheets off
+For `c ≠ 0` this bounds the rational fiber by the roots of a cubic whose
+leading coefficient is exactly the discriminant scalar `W`: three sheets off
 the wall `V(W)`, a linear equation on it, and an inconsistent equation exactly
 on the missed curve (`W = 0`, `b² = 12a`, `a ≠ 0`).  The proof is one explicit
 Nullstellensatz certificate obtained from the extended Euclidean cofactors of
 the fiber resultant. -/
-theorem fiber_cubic (x y z a b c : K)
+theorem fiber_u_elimination (x y z a b c : K)
     (h : F K (x, y, z) = (a, b, c)) :
     c ^ 2 * ((27 * a ^ 2 * c ^ 2 - 18 * a * b * c + 16 * a + b ^ 3 * c - b ^ 2)
         * (1 + x * y) ^ 3 + (b ^ 2 - 12 * a) * (1 + x * y) - 4 * a) = 0 := by
@@ -263,7 +262,7 @@ section TauChart
 
 /-! ### The τ-chart: fiber combinatorics in collapsed coordinates
 
-For a target `(a, b, c)` with `c ≠ 0`, every fiber state has `x ≠ 0`, and the
+For a target `(a, b, c)` with `c ≠ 0`, every fiber point has `x ≠ 0`, and the
 substitution `t = c/x`, `u = 1 + xy` identifies the fiber of `F` with the
 common zero set (`t ≠ 0`) of two small polynomials `chartG₁`, `chartG₂` in the
 scaled invariants `A = ac²`, `r = bc` (`fiber_tau_coordinates`,
@@ -279,7 +278,7 @@ two sheets as square roots of `9t`.  The `c = 0` chart is quadratic instead
 (`fiber_czero_equation`, `reconstruct_czero`), with `plane_section` as the
 `x = 0` sheet.
 
-The τ-cubic and the `u`-cubic of `fiber_cubic` explain the non-properness
+The τ-cubic and the `u`-cubic of `fiber_u_elimination` explain the discriminant
 wall twice: in the `u`-cubic the leading coefficient `W` dies and the degree
 drops `3 → 1`; in the τ-cubic the constant term `c²W` dies and two roots
 collapse to the forbidden value `t = 0`.
@@ -319,7 +318,7 @@ theorem sheetCubic_zero (a b c : K) :
   simp only [sheetCubic]
   ring
 
-/-- **Chart coordinates.**  Over a target with `c ≠ 0`, every fiber state has
+/-- **Chart coordinates.**  Over a target with `c ≠ 0`, every fiber point has
 `x ≠ 0` and satisfies both chart equations at `t = c/x`, `u = 1 + xy`. -/
 theorem fiber_tau_coordinates {x y z a b c : K} (hc : c ≠ 0)
     (h : F K (x, y, z) = (a, b, c)) :
@@ -340,7 +339,7 @@ theorem fiber_tau_coordinates {x y z a b c : K} (hc : c ≠ 0)
     linear_combination (c * x ^ 2) * h2 + (3 * c * (1 + x * y) ^ 2) * h3
 
 /-- **Chart reconstruction.**  Every chart solution with `t ≠ 0` arises from
-an actual fiber state, by explicit formulas; with `fiber_tau_coordinates`
+an actual fiber point, by explicit formulas; with `fiber_tau_coordinates`
 this makes the `c ≠ 0` fiber equivalent to the chart solution set. -/
 theorem reconstruct_fiber {a b c t u : K} (hc : c ≠ 0) (ht : t ≠ 0)
     (h1 : chartG₁ (a * c ^ 2) t u = 0) (h2 : chartG₂ (b * c) t u = 0) :
@@ -456,7 +455,7 @@ theorem sheetCubic_sub (A r t s : K) :
   simp only [sheetCubic]
   ring
 
-/-- **The `c = 0` chart.**  Any fiber state over `(a, b, 0)` with `x ≠ 0`
+/-- **The `c = 0` chart.**  Any fiber point over `(a, b, 0)` with `x ≠ 0`
 satisfies the sheet quadric `(16a − b²)x² = −4` — note `16a − b² = W(a,b,0)` —
 and has `u = 1 + xy` pinned linearly. -/
 theorem fiber_czero_equation {x y z a b : K} (hx : x ≠ 0)
@@ -474,7 +473,7 @@ theorem fiber_czero_equation {x y z a b : K} (hx : x ≠ 0)
   · linear_combination x * h2 + (3 * (1 + x * y) ^ 2) * htau
 
 /-- **`c = 0` reconstruction.**  Any solution of the sheet quadric with
-`x ≠ 0` produces an actual fiber state over `(a, b, 0)`; with
+`x ≠ 0` produces an actual fiber point over `(a, b, 0)`; with
 `fiber_czero_equation` and the section `plane_section` this determines the
 whole `c = 0` fiber structure.  Characteristic zero is required (the chart
 divides by `4`). -/
@@ -493,48 +492,48 @@ theorem reconstruct_czero [CharZero K] {x a b : K} (hx : x ≠ 0)
 end TauChart
 
 
-section PrimitiveCubic
+section NormalizedCubic
 
-/-! ### The primitive fiber cubic
+/-! ### The normalized fiber cubic
 
-In the resolvent variable `t = y + 1/x`, the fiber over `(a, b, c)` is
+In the root coordinate `t = y + 1/x`, the fiber over `(a, b, c)` is
 governed by the cubic `P(T) = c·T³ − 2T² + bT − 2a`, whose coefficients are
 *linear* in the target — so its annihilation certificate is immediate.  Its
 key properties, all certified below:
 
-* the cleared form `primitive_cubic` holds with no hypotheses at all (at
+* the cleared form `fiberCubic_cleared` holds with no hypotheses at all (at
   `x = 0` it degenerates to the true statement `c = 0`);
-* `primitive_cubic_deriv`: `x²·P′(t) = 2x`, so every fiber state is a simple
-  root of its own cubic — étaleness of `F` made visible in one identity;
+* `fiberCubic_deriv_identity`: `x²·P′(t) = 2x`, so every fiber point is a simple
+  root of its own cubic — the Keller condition made visible in one identity;
 * `fiberCubic_discr`: the discriminant is exactly `−4W`, identifying the
-  non-properness wall with the discriminant hypersurface;
+  wall with the discriminant hypersurface;
 * `fiberCubic_on_curve`: on the missed curve the cubic collapses to the
   perfect cube `c·(T − 2/(3c))³` — the omitted locus is the triple-root
   stratum, which is also the singular locus of `V(W)`.
 
-Compared to the τ-chart, this presentation is primitive: distinct fiber
-states never share a resolvent value (their `t`-values are distinct roots of
-`P`).  The τ-chart remains useful for reconstruction; this section is the
+Compared to the τ-chart, this presentation is separating: distinct fiber
+points never share a root-coordinate value (their `t`-values are distinct
+roots of `P`).  The τ-chart remains useful for reconstruction; this section is the
 right interface to Mathlib's `Cubic` root-counting machinery. -/
 
 variable {K : Type*} [Field K]
 
-/-- The primitive fiber cubic `c·T³ − 2T² + bT − 2a` as a Mathlib `Cubic`. -/
+/-- The normalized fiber cubic `c·T³ − 2T² + bT − 2a` as a Mathlib `Cubic`. -/
 def fiberCubic (a b c : K) : Cubic K := ⟨c, -2, b, -2 * a⟩
 
-/-- The discriminant of the fiber cubic is exactly `−4W`: the non-properness
-wall is the discriminant hypersurface of the fiber family. -/
+/-- The discriminant of the fiber cubic is exactly `−4W`: the wall `V(W)` is
+precisely the discriminant hypersurface of the fiber family. -/
 theorem fiberCubic_discr (a b c : K) :
     (fiberCubic a b c).discr =
       -4 * (27 * a ^ 2 * c ^ 2 - 18 * a * b * c + 16 * a + b ^ 3 * c - b ^ 2) := by
   simp only [fiberCubic, Cubic.discr]
   ring
 
-/-- **Primitive cubic, cleared form.**  Every fiber state satisfies the fiber
+/-- **Normalized cubic, cleared form.**  Every fiber point satisfies the fiber
 cubic at `t = y + 1/x`, multiplied through by `x³`.  No nondegeneracy
 hypothesis is needed: at `x = 0` the identity degenerates to `c = 0`, which
 is forced. -/
-theorem primitive_cubic {x y z a b c : K}
+theorem fiberCubic_cleared {x y z a b c : K}
     (h : F K (x, y, z) = (a, b, c)) :
     c * (x * y + 1) ^ 3 - 2 * x * (x * y + 1) ^ 2 + b * x ^ 2 * (x * y + 1) -
       2 * a * x ^ 3 = 0 := by
@@ -543,21 +542,21 @@ theorem primitive_cubic {x y z a b c : K}
   linear_combination (2 * x ^ 3) * h1 - (x ^ 2 * (x * y + 1)) * h2 -
     ((x * y + 1) ^ 3) * h3
 
-/-- Division form of `primitive_cubic` on the chart `x ≠ 0`. -/
-theorem primitive_cubic_div {x y z a b c : K} (hx : x ≠ 0)
+/-- Division form of `fiberCubic_cleared` on the chart `x ≠ 0`. -/
+theorem fiberCubic_div {x y z a b c : K} (hx : x ≠ 0)
     (h : F K (x, y, z) = (a, b, c)) :
     c * (y + 1 / x) ^ 3 - 2 * (y + 1 / x) ^ 2 + b * (y + 1 / x) - 2 * a = 0 := by
-  have key := primitive_cubic h
+  have key := fiberCubic_cleared h
   have hx3 : x ^ 3 ≠ 0 := pow_ne_zero 3 hx
   apply mul_left_cancel₀ hx3
   rw [mul_zero]
   field_simp
   linear_combination key
 
-/-- **Simple-root identity.**  `x²·P′(y + 1/x) = 2x`: every fiber state is a
-simple root of its own fiber cubic.  This is the étale condition seen through
-the resolvent. -/
-theorem primitive_cubic_deriv {x y z a b c : K}
+/-- **Simple-root identity.**  `x²·P′(y + 1/x) = 2x`: every fiber point is a
+simple root of its own fiber cubic.  This is the Keller condition seen through
+the root coordinate. -/
+theorem fiberCubic_deriv_identity {x y z a b c : K}
     (h : F K (x, y, z) = (a, b, c)) :
     3 * c * (x * y + 1) ^ 2 - 4 * x * (x * y + 1) + b * x ^ 2 = 2 * x := by
   simp only [F, Prod.mk.injEq] at h
@@ -580,24 +579,25 @@ theorem fiberCubic_on_curve [CharZero K] {a b c : K}
   linear_combination (-(9 : K) / 2 * c ^ 2) * h12 +
     (9 * c * T - (3 * b * c + 4) / 2) * h34
 
-end PrimitiveCubic
+end NormalizedCubic
 
 
 section ResolventTower
 
-/-! ### The resolvent tower: `√(−W)` splits the residual sheets
+/-! ### The quadratic tower: `√(−W)` splits the residual sheets
 
 On the source, one root `t = y + 1/x` of the fiber cubic is known.  Dividing
 it out leaves the residual quadratic carrying the other two sheets, and the
 `disc_factorization` identity shows its discriminant is `−W·x²` on the fiber
-(`residual_disc`).  Consequently the degree-six Galois closure of the cover is
-obtained from the source by adjoining one square root of `−W`: the quadratic
-resolvent `s² = −W` of the fiber cubic pulls back to the square of `x·s` on
-the source.  `sibling_root` realizes this concretely: from one root and a
-square root `σ` of the residual discriminant, the other two roots are given by
-the quadratic formula, and `fiber_point_of_root` turns any simple root into an
-actual fiber state.  `resolvent_injective` shows distinct fiber states have
-distinct resolvent values.  Together these reduce the exact fiber count to
+(`residual_disc`).  Consequently adjoining one square root of `−W` to the
+source splits the residual quadratic — the expected quadratic step toward the
+generic splitting field.  (Generic irreducibility and `S₃` monodromy are not
+formalized; see the README.)  `sibling_root` realizes the splitting
+concretely: from one root and a square root `σ` of the residual discriminant,
+the other two roots are given by the quadratic formula, and
+`fiber_point_of_root` turns any simple root into an actual fiber point.
+`resolvent_injective` shows distinct fiber points have distinct
+root-coordinate values.  Together these reduce the exact fiber count to
 counting simple roots of one cubic. -/
 
 variable {K : Type*} [Field K]
@@ -621,38 +621,38 @@ theorem disc_factorization (a b c t : K) :
   ring
 
 /-- Division form of the simple-root identity: `P′(y + 1/x) = 2/x`. -/
-theorem primitive_cubic_deriv_div {x y z a b c : K} (hx : x ≠ 0)
+theorem fiberCubic_deriv_div {x y z a b c : K} (hx : x ≠ 0)
     (h : F K (x, y, z) = (a, b, c)) :
     3 * c * (y + 1 / x) ^ 2 - 4 * (y + 1 / x) + b = 2 / x := by
-  have key := primitive_cubic_deriv h
+  have key := fiberCubic_deriv_identity h
   have hx2 : x ^ 2 ≠ 0 := pow_ne_zero 2 hx
   apply mul_left_cancel₀ hx2
   field_simp
   linear_combination key
 
-/-- **Resolvent pullback: the degree-six tower certificate.**  On the fiber,
-the discriminant of the residual quadratic equals `−W·x²`.  Hence adjoining a
-square root of `−W` to the source splits the two remaining sheets: the Galois
-closure of the threefold cover is `source(√−W)`, and the quadratic resolvent
-surface `s² = −W` is its intermediate double cover. -/
+/-- **Residual discriminant certificate.**  On the fiber, the discriminant of
+the residual quadratic equals `−W·x²`.  Hence adjoining a square root of `−W`
+to the source splits the two remaining sheets of the fiber cubic.
+(Identifying `source(√−W)` with the full degree-six Galois closure would in
+addition require generic irreducibility, which is not formalized.) -/
 theorem residual_disc [NeZero (2 : K)] {x y z a b c : K} (hx : x ≠ 0)
     (h : F K (x, y, z) = (a, b, c)) :
     (c * (y + 1 / x) - 2) ^ 2 -
         4 * c * (c * (y + 1 / x) ^ 2 - 2 * (y + 1 / x) + b) =
       -(wallW a b c) * x ^ 2 := by
   have key := disc_factorization a b c (y + 1 / x)
-  rw [primitive_cubic_div hx h, mul_zero, add_zero,
-    primitive_cubic_deriv_div hx h] at key
+  rw [fiberCubic_div hx h, mul_zero, add_zero,
+    fiberCubic_deriv_div hx h] at key
   have hx2 : (2 / x) ^ 2 ≠ 0 := pow_ne_zero 2 (div_ne_zero two_ne_zero hx)
   apply mul_left_cancel₀ hx2
   rw [← key]
   field_simp
   ring
 
-/-- **Fiber states from simple roots.**  Any root `t` of the fiber cubic with
+/-- **Fiber points from simple roots.**  Any root `t` of the fiber cubic with
 `x·P′(t) = 2` solvable (equivalently `P′(t) ≠ 0`) reconstructs to an actual
-fiber state.  The certificate is one term per component.  Together with
-`primitive_cubic` and `resolvent_injective` this identifies the fiber over
+fiber point.  The certificate is one term per component.  Together with
+`fiberCubic_cleared` and `resolvent_injective` this identifies the fiber over
 targets with `c ≠ 0` with the simple roots of the fiber cubic. -/
 theorem fiber_point_of_root [NeZero (2 : K)] {x t a b c : K} (hx : x ≠ 0)
     (hxd : x * (3 * c * t ^ 2 - 4 * t + b) = 2)
@@ -670,15 +670,15 @@ theorem fiber_point_of_root [NeZero (2 : K)] {x t a b c : K} (hx : x ≠ 0)
   · field_simp
     ring
 
-/-- **The resolvent separates the fiber.**  Two fiber states over one target
-with the same resolvent value `y + 1/x` coincide. -/
+/-- **The root coordinate separates the fiber.**  Two fiber points over one target
+with the same root-coordinate value `y + 1/x` coincide. -/
 theorem resolvent_injective [NeZero (2 : K)] {x₁ y₁ z₁ x₂ y₂ z₂ a b c : K}
     (hx₁ : x₁ ≠ 0) (hx₂ : x₂ ≠ 0)
     (h₁ : F K (x₁, y₁, z₁) = (a, b, c)) (h₂ : F K (x₂, y₂, z₂) = (a, b, c))
     (ht : y₁ + 1 / x₁ = y₂ + 1 / x₂) :
     (x₁, y₁, z₁) = (x₂, y₂, z₂) := by
-  have hd₁ := primitive_cubic_deriv_div hx₁ h₁
-  have hd₂ := primitive_cubic_deriv_div hx₂ h₂
+  have hd₁ := fiberCubic_deriv_div hx₁ h₁
+  have hd₂ := fiberCubic_deriv_div hx₂ h₂
   rw [ht] at hd₁
   have h2 : (2 : K) / x₁ = 2 / x₂ := by rw [← hd₁, ← hd₂]
   have hxx : x₁ = x₂ := by
@@ -722,7 +722,7 @@ section FiberEquiv
 /-! ### The explanation: the fiber *is* the simple-root set of one cubic
 
 The counterexample admits a one-sentence structure theorem.  For a target
-`(a, b, c)` with `c ≠ 0`, the resolvent `t = y + 1/x` is a **bijection**
+`(a, b, c)` with `c ≠ 0`, the root coordinate `t = y + 1/x` is a **bijection**
 between the fiber `F⁻¹(a, b, c)` and the simple roots in `K` of the single
 cubic
 
@@ -733,7 +733,7 @@ P(T) = c·T³ − 2T² + bT − 2a,
 with explicit inverse `x = 2/P′(t)`, `y = t − 1/x`, `z = (2x − 3x²y − c)/x³`.
 This explains every headline result at once:
 
-* **Keller condition.**  `primitive_cubic_deriv` says `x·P′(t) = 2` on the
+* **Keller condition.**  `fiberCubic_deriv_identity` says `x·P′(t) = 2` on the
   fiber: every preimage is a simple root of its own cubic.  The constant
   Jacobian is the pointwise simplicity of roots — a local condition.
 * **Non-injectivity.**  A cubic can have three simple roots; the fiber count
@@ -765,7 +765,7 @@ noncomputable def fiberPoint (b c t : K) : K × K × K :=
         (t - 1 / (2 / (3 * c * t ^ 2 - 4 * t + b))) - c) /
     (2 / (3 * c * t ^ 2 - 4 * t + b)) ^ 3)
 
-/-- Every simple root of the fiber cubic reconstructs to a fiber state. -/
+/-- Every simple root of the fiber cubic reconstructs to a fiber point. -/
 theorem fiberPoint_mem {a b c t : K}
     (hP : c * t ^ 3 - 2 * t ^ 2 + b * t - 2 * a = 0)
     (hd : 3 * c * t ^ 2 - 4 * t + b ≠ 0) :
@@ -775,26 +775,26 @@ theorem fiberPoint_mem {a b c t : K}
     (div_mul_cancel₀ 2 hd) hP
 
 omit [NeZero (2 : K)] in
-/-- The reconstructed state has resolvent value exactly `t`: a pure ring
+/-- The reconstructed point has root-coordinate value exactly `t`: a pure ring
 identity `(t - 1/x) + 1/x = t`. -/
 theorem fiberPoint_resolvent (b c t : K) :
     (fiberPoint b c t).2.1 + 1 / (fiberPoint b c t).1 = t := by
   dsimp only [fiberPoint]
   ring
 
-/-- The resolvent value of any fiber state with `x ≠ 0` is a simple root of
+/-- The root-coordinate value of any fiber point with `x ≠ 0` is a simple root of
 the fiber cubic. -/
 theorem resolvent_simpleRoot {x y z a b c : K} (hx : x ≠ 0)
     (h : F K (x, y, z) = (a, b, c)) :
     c * (y + 1 / x) ^ 3 - 2 * (y + 1 / x) ^ 2 + b * (y + 1 / x) - 2 * a = 0 ∧
       3 * c * (y + 1 / x) ^ 2 - 4 * (y + 1 / x) + b ≠ 0 := by
-  refine ⟨primitive_cubic_div hx h, ?_⟩
-  rw [primitive_cubic_deriv_div hx h]
+  refine ⟨fiberCubic_div hx h, ?_⟩
+  rw [fiberCubic_deriv_div hx h]
   exact div_ne_zero two_ne_zero hx
 
 /-- **Structure theorem: the fiber is the simple-root set of one cubic.**
 
-For `c ≠ 0` the resolvent `t = y + 1/x` is an equivalence between the fiber
+For `c ≠ 0` the root coordinate `t = y + 1/x` is an equivalence between the fiber
 of `F` over `(a, b, c)` and the simple roots in `K` of
 `P(T) = c·T³ − 2T² + bT − 2a`, with explicit polynomial-in-`1/P′` inverse. -/
 noncomputable def fiberEquivSimpleRoots {a b c : K} (hc : c ≠ 0) :
@@ -826,7 +826,7 @@ We represent `ℙ¹(K)` by `Option K`: `some t` is `[t : 1]` and `none` is
 at infinity is simple whenever it occurs.  Thus one statement covers every
 target and identifies the `x = 0` section with that projective root. -/
 
-/-- Simple `K`-rational roots of the projectivized primitive fiber cubic.
+/-- Simple `K`-rational roots of the projectivized fiber cubic.
 `none` denotes the point at infinity `[1 : 0]`. -/
 def projectiveSimpleRoot (a b c : K) : Option K → Prop
   | none => c = 0
@@ -835,7 +835,7 @@ def projectiveSimpleRoot (a b c : K) : Option K → Prop
         3 * c * t ^ 2 - 4 * t + b ≠ 0
 
 omit [NeZero (2 : K)] in
-/-- A fiber state with `x = 0` is the unique point supplied by the plane
+/-- A fiber point with `x = 0` is the unique point supplied by the plane
 section; in particular its target has `c = 0`. -/
 theorem fiber_xzero {y z a b c : K} (h : F K (0, y, z) = (a, b, c)) :
     c = 0 ∧ y = b ∧ z = a - 4 * b ^ 2 := by
@@ -858,7 +858,7 @@ noncomputable def projectiveFiberPointValue (a b c : K) : Option K → K × K ×
   | none => (0, b, a - 4 * b ^ 2)
   | some t => fiberPoint b c t
 
-/-- Send a fiber state to its projective resolvent, using infinity exactly on
+/-- Send a fiber point to its projective resolvent, using infinity exactly on
 the `x = 0` sheet. -/
 noncomputable def projectiveResolvent {a b c : K}
     (p : {p : K × K × K // F K p = (a, b, c)}) :
@@ -871,7 +871,7 @@ noncomputable def projectiveResolvent {a b c : K}
   · simpa [projectiveResolventValue, projectiveSimpleRoot, hx] using
       resolvent_simpleRoot hx hp
 
-/-- Reconstruct a fiber state from a projective simple root. -/
+/-- Reconstruct a fiber point from a projective simple root. -/
 noncomputable def projectiveFiberPoint {a b c : K}
     (t : {t : Option K // projectiveSimpleRoot a b c t}) :
     {p : K × K × K // F K p = (a, b, c)} := by
@@ -1043,7 +1043,7 @@ theorem projectiveSimpleRoot_exists_third {a b c : K} {r₁ r₂ : Option K}
             exact ⟨some t₃, h₃, by simpa using h31, by simpa using h32⟩
 
 /-- **Arithmetic no-two law.**  Over every field of characteristic not two,
-two distinct states in one fiber force a third state in that same fiber,
+two distinct points in one fiber force a third point in that same fiber,
 distinct from both. -/
 theorem two_fiber_points_extend_to_three {a b c : K} {p₁ p₂ : K × K × K}
     (h₁ : F K p₁ = (a, b, c)) (h₂ : F K p₂ = (a, b, c)) (hne : p₁ ≠ p₂) :
