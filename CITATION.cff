@@ -11,6 +11,10 @@ license: Apache-2.0
 identifiers:
   - type: doi
     value: 10.5281/zenodo.21461528
+    description: "Concept DOI (resolves to the latest version)"
+  - type: doi
+    value: 10.5281/zenodo.21476749
+    description: "Version DOI for v0.2.0"
 version: 0.2.0
 date-released: "2026-07-21"
 abstract: >-
