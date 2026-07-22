@@ -5,7 +5,7 @@
 
 Lean 4 / Mathlib formalization of Alpöge's July 2026 counterexample to the
 Jacobian Conjecture, together with new machine-verified theorems about its
-geometry.  Four files, no `sorry`, no axioms beyond Mathlib.
+geometry.  Five files, no `sorry`, no axioms beyond Mathlib.
 
 ## Verified results (`Alpoge/Basic.lean`)
 
@@ -55,8 +55,8 @@ one, or zero.
 Additionally verified (counting layer):
 
 - `fiber_ncard_le_three`, `fiber_ncard_mem_zero_one_three` — every rational
-  fiber over a characteristic-zero field is finite of cardinality `0`, `1`,
-  or `3`;
+  fiber over any field with `2 ≠ 0` — in particular over every finite field
+  of odd order — is finite of cardinality `0`, `1`, or `3`;
 - `range_eq_compl_missedCurve` — over an algebraically closed field of
   characteristic zero the image is exactly the complement of the triple-root
   curve `{12a = b², 3bc = 4}`;
@@ -113,6 +113,26 @@ refuted:
   point map injective, contradicting the three-point fiber);
 - `jacobian_conjecture_false` — the negation of the mirrored statement,
   witnessed at `k = ℚ`, `σ = Fin 3`.
+
+## Characteristic-three degeneration (`Alpoge/CharThree.lean`)
+
+In characteristic `3` the geometry undergoes a verified phase transition:
+
+- `fiberCubic_char3_normal_form` — `T = b + S` depresses the fiber cubic to
+  the exact normal form `cS³ + S² + W`: the wall scalar is the constant term;
+- `not_onMissedCurve_char3` — the missed curve is empty (`3bc = 4` forces
+  `1 = 0`);
+- `wall_smooth_char3` — `V(W)` is smooth: the formal `a`-partial evaluates
+  to `1` everywhere;
+- `no_triple_root_char3` — the triple-root stratum disappears.
+
+Announced next milestone (verified numerically for `q = 3, 5, 7, 11, 13`;
+proof sketch by ordered-root counting): exact fiber statistics over every
+finite field `𝔽_q` of odd order — `6N₃ = (q−1)(q²+2)` for `char ≠ 3`,
+`6N₃ = q²(q−1)` for `char = 3`, with `N₀ = 2N₃` and `N₁ = q³ − 3N₃`; the
+fiber-size proportions converge to `(1/2, 1/3, 1/6)`, the class distribution
+of `S₃`.  In characteristic `3`, over an algebraically closed field, the map
+becomes surjective while remaining étale and non-injective.
 
 ## Not claimed (work in progress)
 

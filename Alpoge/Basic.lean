@@ -1237,10 +1237,11 @@ theorem fiber_ncard_le_three (a b c : K) :
   let e := fiberEquivSimpleRootsProj (K := K) (a := a) (b := b) (c := c)
   exact (Set.ncard_congr' e).le.trans (projectiveSimpleRoots_ncard_le_three a b c)
 
-/-- **The `0/1/3` law.**  Over every characteristic-zero field, every
-`K`-rational fiber has cardinality zero, one, or three.  Cardinality two is
-impossible even when the fiber cubic does not split over `K`. -/
-theorem fiber_ncard_mem_zero_one_three [CharZero K] (a b c : K) :
+/-- **The `0/1/3` law.**  Over every field with `2 ≠ 0` — in particular over
+every finite field of odd order — every `K`-rational fiber has cardinality
+zero, one, or three.  Cardinality two is impossible even when the fiber cubic
+does not split over `K`. -/
+theorem fiber_ncard_mem_zero_one_three (a b c : K) :
     Set.ncard {p : K × K × K | F K p = (a, b, c)} ∈ ({0, 1, 3} : Set ℕ) := by
   let S : Set (K × K × K) := {p | F K p = (a, b, c)}
   have hle : S.ncard ≤ 3 := fiber_ncard_le_three a b c
