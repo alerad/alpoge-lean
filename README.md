@@ -155,6 +155,30 @@ In characteristic `3`, over an algebraically closed field, the map becomes
 surjective while remaining étale and non-injective (certificate layer in
 `CharThree.lean`; the algebraically-closed root count is future work).
 
+## The double-root slice is affine 3-space (`Alpoge/Slice.lean`)
+
+Tao's digestion of the counterexample (2026-07-21) presents the source as the
+slice `X = {(L,Q) : Res(L,Q) = 1, D(LQ) = 1}` of the multiplication map
+`(L,Q) ↦ LQ` on binary forms, where `D` is the double-root-type coefficient
+hyperplane, and observes the "affine miracle": `X` is polynomially isomorphic
+to `𝔸³`.  **Machine-verified** at the `K`-point level, over every field with
+`2 ≠ 0` (`sliceEquiv`):
+
+- the slice equations in coordinates `L = az + bw`, `Q = cz² + dzw + ew²` are
+  `a²e − abd + cb² = 1` and `ad + bc = 1`;
+- `res_eq_key_combination`: the resultant decomposes as
+  `Res = b·(ad + bc) + a·(ae − 2bd)`, so on the slice `b = 1 + a·(2bd − ae)`
+  (Will Sawin's coordinate reduction);
+- Tao's explicit polynomial chart `𝔸³ → X` lands in the slice
+  (characteristic-free `ℤ`-identity) and is a bijection onto it, with a
+  polynomial-in-`1/2` inverse — surjectivity by cancelling `a` (resp. `a²`)
+  against CAS-extracted certificates, with the `a = 0` fiber (where `b = 1`
+  is forced) checked separately.
+
+The cohomological reason the trivialization *had* to exist — the slice is an
+affine-line torsor over the `(a, y)`-plane, and `H¹(𝔸², O) = Pic(𝔸²) = 0` —
+is not formalized; this module pins down its `K`-point content.
+
 ## Not claimed (work in progress)
 
 - `S₃` monodromy and irreducibility statements;
@@ -162,9 +186,10 @@ surjective while remaining étale and non-injective (certificate layer in
   (properness/topology is not formalized; the fiber-count stratification
   above is its `K`-point layer);
 - scheme-level (as opposed to `K`-point) statements — in particular the
-  factorization presentation (`Sym¹ × Sym² → Sym³` multiplication, resultant
-  normalization, and the affine slice) of which the incidence theorem is the
-  `K`-point shadow;
+  factorization presentation (`Sym¹ × Sym² → Sym³` multiplication and
+  resultant normalization) of which the incidence theorem is the `K`-point
+  shadow, and the torsor/cohomology argument of which the slice
+  trivialization is the `K`-point shadow;
 - the analytic identification of formal partials with Fréchet derivatives.
 
 ## Build
