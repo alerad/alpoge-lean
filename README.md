@@ -40,7 +40,7 @@ only `2 ≠ 0`):
 ## Structure theorem (`Alpoge/Incidence.lean`)
 
 - `sourceEquivSimpleRootIncidence` — **the whole source of the map is
-  equivalent to the incidence space of pairs (normalized binary cubic
+  equivalent, as an equivalence of `K`-points, to the incidence space of pairs (normalized binary cubic
   `cT³ − 2T²U + bTU² − 2aU³`, simple projective root), and under this
   equivalence the Keller map is the coefficient projection — definitionally
   (`rfl`)**;
@@ -118,12 +118,14 @@ refuted:
 
 In characteristic `3` the geometry undergoes a verified phase transition:
 
-- `fiberCubic_char3_normal_form` — `T = b + S` depresses the fiber cubic to
-  the exact normal form `cS³ + S² + W`: the wall scalar is the constant term;
+- `fiberCubic_char3_normal_form` — the translation `T = b + S` puts the
+  fiber cubic into the exact normal form `cS³ + S² + W` (the linear term
+  vanishes; the wall scalar is the constant term);
 - `not_onMissedCurve_char3` — the missed curve is empty (`3bc = 4` forces
   `1 = 0`);
-- `wall_smooth_char3` — `V(W)` is smooth: the formal `a`-partial evaluates
-  to `1` everywhere;
+- `wall_pderiv_a_ne_zero_char3` — the formal `a`-partial of the wall
+  polynomial evaluates to `1` everywhere (whence `V(W)` has no critical
+  `K`-points: the singular curve is gone);
 - `no_triple_root_char3` — the triple-root stratum disappears.
 
 ## Exact finite-field statistics (`Alpoge/Counting.lean`)
@@ -135,9 +137,11 @@ for the number of targets with exactly `j` rational preimages and
 - `6N₃ = (q−1)(q²+2)` for `char K ≠ 3`, and `6N₃ = q²(q−1)` for
   `char K = 3`;
 - `N₁ + 3N₃ = q³` and `N₀ + N₁ + N₃ = q³`, hence `N₀ = 2N₃`;
-- the fiber-size proportions converge to `(1/2, 1/3, 1/6)` — the class
-  distribution of `S₃`, recovered by elementary counting with error term
-  zero.
+- the fiber-count distribution satisfies `(N₀, N₁, N₃)/q³ → (1/3, 1/2, 1/6)`
+  — the proportions of elements of `S₃` with `0`, `1`, `3` fixed points
+  (3-cycles, transpositions, identity): fibers distribute like fixed-point
+  counts of the generic `S₃`-cover, obtained here by exact finite-`q`
+  counting with all lower-order terms explicit.
 
 Proof: the double count of (target, ordered triple of simple roots) pairs.
 A distinct triple of projective points supports exactly one target unless it
@@ -157,7 +161,10 @@ surjective while remaining étale and non-injective (certificate layer in
 - identification of the Jelonek non-properness set `S_F` with `V(W)`
   (properness/topology is not formalized; the fiber-count stratification
   above is its `K`-point layer);
-- scheme-level (as opposed to `K`-point) statements;
+- scheme-level (as opposed to `K`-point) statements — in particular the
+  factorization presentation (`Sym¹ × Sym² → Sym³` multiplication, resultant
+  normalization, and the affine slice) of which the incidence theorem is the
+  `K`-point shadow;
 - the analytic identification of formal partials with Fréchet derivatives.
 
 ## Build

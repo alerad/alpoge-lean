@@ -307,12 +307,13 @@ def IsRootTriple (v : K × K × K) (r : Triple K) : Prop :=
 instance (v : K × K × K) : DecidablePred (IsRootTriple v) := fun _ =>
   inferInstanceAs (Decidable (_ ∧ _ ∧ _))
 
-/-- The forbidden triples: all finite, summing to zero. -/
-def IsForbidden : Triple K → Prop
+/-- Triples of affine (finite) points summing to zero — inadmissible
+because the slice normalization forces `c·(t₁+t₂+t₃) = 2`. -/
+def HasZeroAffineSum : Triple K → Prop
   | (some t₁, some t₂, some t₃) => t₁ + t₂ + t₃ = 0
   | _ => False
 
-instance : DecidablePred (IsForbidden (K := K))
+instance : DecidablePred (HasZeroAffineSum (K := K))
   | (some _, some _, some _) => inferInstanceAs (Decidable (_ = _))
   | (none, _, _) => .isFalse fun h => h
   | (some _, none, _) => .isFalse fun h => h
@@ -397,15 +398,15 @@ private theorem psr_none {A B C : K}
     (h : projectiveSimpleRoot A B C none) : C = 0 := h
 
 /-- **The per-triple target count.**  A distinct non-forbidden triple is the
-simple-root triple of exactly one target; forbidden or non-distinct triples
-of none. -/
+simple-root triple of exactly one target; zero-sum or non-distinct triples
+support no target. -/
 theorem card_targets_of_triple (r : Triple K) :
     (Finset.univ.filter fun v : K × K × K =>
         IsDistinct r ∧ IsRootTriple v r).card =
-      if IsDistinct r ∧ ¬ IsForbidden r then 1 else 0 := by
+      if IsDistinct r ∧ ¬ HasZeroAffineSum r then 1 else 0 := by
   by_cases hd : IsDistinct r
   · obtain ⟨r₁, r₂, r₃⟩ := r
-    by_cases hf : IsForbidden ((r₁, r₂, r₃) : Triple K)
+    by_cases hf : HasZeroAffineSum ((r₁, r₂, r₃) : Triple K)
     · -- forbidden: no targets
       rw [if_neg (fun h => h.2 hf), Finset.card_eq_zero,
         Finset.filter_eq_empty_iff]
@@ -521,7 +522,7 @@ distinct triples. -/
 theorem card_incidencePairs_right :
     (incidencePairs (K := K)).card =
       (Finset.univ.filter fun r : Triple K =>
-        IsDistinct r ∧ ¬ IsForbidden r).card := by
+        IsDistinct r ∧ ¬ HasZeroAffineSum r).card := by
   rw [Finset.card_eq_sum_card_fiberwise
     (f := Prod.snd) (t := Finset.univ) (fun x _ => Finset.mem_univ _),
     Finset.card_filter]
@@ -708,7 +709,7 @@ theorem card_forbidden_pairs :
 /-- Forbidden distinct triples biject with sum-zero pairs. -/
 theorem card_forbidden_triples :
     (Finset.univ.filter fun r : Triple K =>
-        IsDistinct r ∧ IsForbidden r).card =
+        IsDistinct r ∧ HasZeroAffineSum r).card =
       (Finset.univ.filter fun p : K × K =>
         p.2 ≠ p.1 ∧ 2 * p.1 + p.2 ≠ 0 ∧ p.1 + 2 * p.2 ≠ 0).card := by
   refine Finset.card_bij' (fun r _ => (r.1.getD 0, r.2.1.getD 0))
@@ -853,12 +854,12 @@ theorem six_mul_targetCount_three :
     card_incidencePairs_right
   have hsplit :
       (Finset.univ.filter fun r : Triple K =>
-        IsDistinct r ∧ IsForbidden r).card +
+        IsDistinct r ∧ HasZeroAffineSum r).card +
       (Finset.univ.filter fun r : Triple K =>
-        IsDistinct r ∧ ¬ IsForbidden r).card =
+        IsDistinct r ∧ ¬ HasZeroAffineSum r).card =
       (Finset.univ.filter (IsDistinct (K := K))).card := by
     rw [← Finset.filter_filter, ← Finset.filter_filter]
-    exact Finset.filter_card_add_filter_neg_card_eq_card _
+    exact Finset.card_filter_add_card_filter_not _
   rw [← hadm, card_forbidden_triples, card_forbidden_pairs,
     card_distinct_triples] at hsplit
   have hq := three_le_card (K := K)
