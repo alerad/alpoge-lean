@@ -5,7 +5,7 @@
 
 Lean 4 / Mathlib formalization of Alpöge's July 2026 counterexample to the
 Jacobian Conjecture, together with new machine-verified theorems about its
-geometry.  Five files, no `sorry`, no axioms beyond Mathlib.
+geometry.  Six files, no `sorry`, no axioms beyond Mathlib.
 
 ## Verified results (`Alpoge/Basic.lean`)
 
@@ -126,13 +126,30 @@ In characteristic `3` the geometry undergoes a verified phase transition:
   to `1` everywhere;
 - `no_triple_root_char3` — the triple-root stratum disappears.
 
-Announced next milestone (verified numerically for `q = 3, 5, 7, 11, 13`;
-proof sketch by ordered-root counting): exact fiber statistics over every
-finite field `𝔽_q` of odd order — `6N₃ = (q−1)(q²+2)` for `char ≠ 3`,
-`6N₃ = q²(q−1)` for `char = 3`, with `N₀ = 2N₃` and `N₁ = q³ − 3N₃`; the
-fiber-size proportions converge to `(1/2, 1/3, 1/6)`, the class distribution
-of `S₃`.  In characteristic `3`, over an algebraically closed field, the map
-becomes surjective while remaining étale and non-injective.
+## Exact finite-field statistics (`Alpoge/Counting.lean`)
+
+**Machine-verified**: over every finite field `K` with `2 ≠ 0`, writing `Nⱼ`
+for the number of targets with exactly `j` rational preimages and
+`q = |K|` (`finiteField_fiber_statistics`):
+
+- `6N₃ = (q−1)(q²+2)` for `char K ≠ 3`, and `6N₃ = q²(q−1)` for
+  `char K = 3`;
+- `N₁ + 3N₃ = q³` and `N₀ + N₁ + N₃ = q³`, hence `N₀ = 2N₃`;
+- the fiber-size proportions converge to `(1/2, 1/3, 1/6)` — the class
+  distribution of `S₃`, recovered by elementary counting with error term
+  zero.
+
+Proof: the double count of (target, ordered triple of simple roots) pairs.
+A distinct triple of projective points supports exactly one target unless it
+is finite with sum zero (`c·(t₁+t₂+t₃) = 2` is forced by Vieta), and
+targets with three-point fibers carry exactly `3! = 6` ordered root triples.
+The forbidden sum-zero locus is counted by an explicit pair bijection.
+Independently cross-checked by brute-force enumeration for
+`q = 3, 5, 7, 11, 13`.
+
+In characteristic `3`, over an algebraically closed field, the map becomes
+surjective while remaining étale and non-injective (certificate layer in
+`CharThree.lean`; the algebraically-closed root count is future work).
 
 ## Not claimed (work in progress)
 
