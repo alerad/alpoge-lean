@@ -5,7 +5,7 @@
 
 Lean 4 / Mathlib formalization of Alpöge's July 2026 counterexample to the
 Jacobian Conjecture, together with new machine-verified theorems about its
-geometry.  Three files, no `sorry`, no axioms beyond Mathlib.
+geometry.  Four files, no `sorry`, no axioms beyond Mathlib.
 
 ## Verified results (`Alpoge/Basic.lean`)
 
