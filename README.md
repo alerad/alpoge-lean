@@ -98,6 +98,22 @@ The discriminant hypersurface `V(W)` (`disc P = −4W`) identified, at the
   `(3bc−4)² = W_a + 3c·W_b` (an identity over `ℤ`) and
   `b·W_b + 2(12a−b²) = (b²−6a)(3bc−4)`.
 
+## Refutation of the formal-conjectures statement (`Alpoge/FormalConjectures.lean`)
+
+The Jacobian Conjecture statement of
+[google-deepmind/formal-conjectures](https://github.com/google-deepmind/formal-conjectures/blob/4fac2db24ca16acef0e1c089c86891d0383dbf38/FormalConjectures/Wikipedia/JacobianConjecture.lean)
+(commit `4fac2db2`) is mirrored verbatim (formal `pderiv` Jacobian, unit
+determinant hypothesis, *compositional* polynomial inverse via `bind₁`) and
+refuted:
+
+- `isUnit_jacobian_det` — the mirrored Jacobian determinant of the Alpöge map
+  is the unit `-2`;
+- `no_polynomial_inverse` — over any characteristic-zero field the map admits
+  no two-sided polynomial inverse (a compositional inverse would make the
+  point map injective, contradicting the three-point fiber);
+- `jacobian_conjecture_false` — the negation of the mirrored statement,
+  witnessed at `k = ℚ`, `σ = Fin 3`.
+
 ## Not claimed (work in progress)
 
 - `S₃` monodromy and irreducibility statements;
