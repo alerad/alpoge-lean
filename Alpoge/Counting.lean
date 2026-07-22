@@ -889,8 +889,8 @@ theorem six_mul_targetCount_three :
 preimages and `q` for the field size: every fiber has `0`, `1`, or `3`
 points; `6N₃ = (q−1)(q²+2)` (or `q²(q−1)` in characteristic `3`);
 `N₁ + 3N₃ = q³`; `N₀ + N₁ + N₃ = q³`; and consequently `N₀ = 2N₃`.  The
-asymptotic fiber-size proportions `(1/2, 1/3, 1/6)` are the class
-distribution of `S₃`. -/
+fiber-count distribution satisfies `(N₀, N₁, N₃)/q³ → (1/3, 1/2, 1/6)`,
+the fixed-point distribution of `S₃`. -/
 theorem finiteField_fiber_statistics :
     (6 * targetCount (K := K) 3 =
       if (3 : K) = 0
