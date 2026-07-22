@@ -155,6 +155,32 @@ In characteristic `3`, over an algebraically closed field, the map becomes
 surjective while remaining étale and non-injective (certificate layer in
 `CharThree.lean`; the algebraically-closed root count is future work).
 
+## The sign-biased S₃ law (`Alpoge/SignBias.lean`)
+
+The finite-field statistics repackage exactly.  Assign to a fiber with
+`j ∈ {0, 1, 3}` rational points the unique `S₃`-class with `j` fixed points,
+and to that class the characteristic polynomial `det(I − t·Pσ)` of the
+permutation representation.  **Machine-verified**, in every commutative
+ring, with `q = |K|`, `Nⱼ` the fiber counts, and bias `b := q³ − 6N₃`:
+
+- `S3_cycle_index` — the uniform average is `1 − t`: summed over `S₃`,
+  `(1−t)³ + 3(1−t)(1−t²) + 2(1−t³) = 6(1−t)` (characteristic-free);
+- `fiberCount_sign_bias` — `2N₁ = q³ + b` and `3N₀ = q³ − b`: the
+  fiber-count distribution is the uniform `S₃` measure deformed exactly in
+  the sign-character direction;
+- `bias_eq_of_three_ne_zero`, `bias_eq_char3` — the bias is the integer
+  `b = (q−1)² + 1` (char `≠ 3`), resp. `b = q²` (char `3`): **no error
+  term**, where generic Chebotarev equidistribution would only give
+  `O(q^{5/2})`;
+- `sum_permCharPoly_fiber` — the averaged characteristic polynomial of the
+  map: `∑_y det(I − t·P_{ν(y)}) = (1 − t)(q³(1 − t²) + 6N₃t²)`, the
+  subtraction-free form of `q³(1 − t)(1 − κ_q t²)` with `κ_q = b/q³`.
+
+The bias coordinate `κ_q` interpolates between `κ = 1` (the map would be a
+bijection — the endpoint the Jacobian Conjecture asserted) and `κ = 0`
+(uniform `S₃` equidistribution, the `q → ∞` limit); the Alpöge map traces
+the exact arc `κ_q = ((q−1)² + 1)/q³`.
+
 ## The double-root slice is affine 3-space (`Alpoge/Slice.lean`)
 
 Tao's digestion of the counterexample (2026-07-21) presents the source as the
