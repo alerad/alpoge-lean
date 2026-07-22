@@ -15,8 +15,8 @@ identifiers:
   - type: doi
     value: 10.5281/zenodo.21476749
     description: "Version DOI for v0.2.0"
-version: 0.2.0
-date-released: "2026-07-21"
+version: 0.3.0
+date-released: "2026-07-22"
 abstract: >-
   Lean 4 / Mathlib formalization of Alpöge's 2026 counterexample to the
   Jacobian Conjecture, with machine-verified structure theorems: the source
@@ -27,8 +27,13 @@ abstract: >-
   algebraically closed field the image is exactly the complement of the
   triple-root curve; the discriminant hypersurface V(W) is exactly the
   fiber-drop locus (counts 3/1/0), with at most one rational fiber point on
-  V(W) over any field with 2 nonzero; and the missed curve is exactly the
-  singular locus of V(W).
+  V(W) over any field with 2 nonzero; the missed curve is exactly the
+  singular locus of V(W); the formal-conjectures Jacobian Conjecture
+  statement is refuted verbatim; and over every finite field of odd order
+  the fiber statistics are exact polynomials in q, with 6N3 = (q-1)(q^2+2)
+  three-point fibers (q^2(q-1) in characteristic three, where the missed
+  curve vanishes), N0 = 2N3, and limiting distribution (1/3, 1/2, 1/6) —
+  the fixed-point distribution of S3.
 keywords:
   - Jacobian conjecture
   - Keller map
