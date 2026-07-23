@@ -5,7 +5,7 @@
 
 Lean 4 / Mathlib formalization of Alpöge's July 2026 counterexample to the
 Jacobian Conjecture, together with new machine-verified theorems about its
-geometry.  Eight files, no `sorry`, no axioms beyond Mathlib.
+geometry.  Eleven files, no `sorry`, no axioms beyond Mathlib.
 
 ## Verified results (`Alpoge/Basic.lean`)
 
@@ -28,7 +28,7 @@ only `2 ≠ 0`):
   condition as one identity);
 - `residual_disc` — the residual quadratic has discriminant `−W·x²` on the
   fiber: adjoining `√−W` splits the two residual sheets — the quadratic step
-  toward the generic splitting field (irreducibility not formalized);
+  toward the generic splitting field;
 - `fiber_point_of_root`, `sibling_root`, `resolvent_injective` — explicit
   reconstruction of fiber points from simple roots, and of the remaining
   sheets from one root plus a square root of `−W`;
@@ -205,9 +205,31 @@ The cohomological reason the trivialization *had* to exist — the slice is an
 affine-line torsor over the `(a, y)`-plane, and `H¹(𝔸², O) = Pic(𝔸²) = 0` —
 is not formalized; this module pins down its `K`-point content.
 
+## Generic function-field monodromy (`Alpoge/GenericMonodromy.lean`)
+
+Over every characteristic-zero field `k`, let
+`K = k(a,b,c)` and `P(T) = cT³ − 2T² + bT − 2a`.  The generic
+splitting-field statement is now machine-verified:
+
+- `genericFiberPoly_irreducible`, `genericFiberPoly_separable` — `P` is an
+  irreducible separable cubic over `K`;
+- `genericFiberPoly_discr_not_isSquare` — its discriminant `−4W` is not a
+  square in `K`.  The proof verifies
+  `disc_a(W) = 4(4−3bc)³`, proves `4−3bc` and `W` irreducible, and supplies
+  the required UFD-to-fraction-field parity lemma;
+- `genericDelta_minpoly_natDegree` — the Vandermonde square root of the
+  discriminant has minimal-polynomial degree exactly two in the splitting
+  field;
+- `genericGal_card`, `genericMonodromyEquiv` — the splitting-field
+  automorphism group has order six, and its faithful action on the three
+  roots is an explicit multiplicative equivalence with `Equiv.Perm (Fin 3)`,
+  i.e. `S₃`.
+
+This is function-field monodromy.  No topological `π₁` or Frobenius theorem is
+claimed.
+
 ## Not claimed (work in progress)
 
-- `S₃` monodromy and irreducibility statements;
 - identification of the Jelonek non-properness set `S_F` with `V(W)`
   (properness/topology is not formalized; the fiber-count stratification
   above is its `K`-point layer);
