@@ -15,8 +15,8 @@ identifiers:
   - type: doi
     value: 10.5281/zenodo.21494810
     description: "Version DOI for v0.3.0"
-version: 0.3.0
-date-released: "2026-07-22"
+version: 0.4.1
+date-released: "2026-07-23"
 abstract: >-
   Lean 4 / Mathlib formalization of Alpöge's 2026 counterexample to the
   Jacobian Conjecture, with machine-verified structure theorems: the source
