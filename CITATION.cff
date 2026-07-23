@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this formalization, please cite it as below."
-title: "Formal verification and structure theory of the Alpöge Keller map"
+title: "Formal verification and structure theory of Alpöge's counterexample to the Jacobian Conjecture"
 type: software
 authors:
   - given-names: Alejandro
