@@ -106,7 +106,7 @@ The Jacobian Conjecture statement of
 determinant hypothesis, *compositional* polynomial inverse via `bind₁`) and
 refuted:
 
-- `isUnit_jacobian_det` — the mirrored Jacobian determinant of the Alpöge map
+- `isUnit_jacobian_det` — the mirrored Jacobian determinant of the Alpöge Keller map
   is the unit `-2`;
 - `no_polynomial_inverse` — over any characteristic-zero field the map admits
   no two-sided polynomial inverse (a compositional inverse would make the
@@ -178,7 +178,7 @@ ring, with `q = |K|`, `Nⱼ` the fiber counts, and bias `b := q³ − 6N₃`:
 
 The bias coordinate `κ_q` interpolates between `κ = 1` (the map would be a
 bijection — the endpoint the Jacobian Conjecture asserted) and `κ = 0`
-(uniform `S₃` equidistribution, the `q → ∞` limit); the Alpöge map traces
+(uniform `S₃` equidistribution, the `q → ∞` limit); the Alpöge Keller map traces
 the exact arc `κ_q = ((q−1)² + 1)/q³`.
 
 ## The double-root slice is affine 3-space (`Alpoge/Slice.lean`)
